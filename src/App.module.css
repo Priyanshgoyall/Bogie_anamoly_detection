@@ -1,0 +1,24 @@
+.shell { min-height: 100vh; }
+.consoleGrid {
+  display: grid;
+  grid-template-columns: minmax(260px, .8fr) minmax(440px, 1.7fr) minmax(270px, .8fr);
+  gap: 24px;
+  align-items: start;
+}
+.viewerColumn { display: flex; flex-direction: column; gap: 0; min-width: 0; }
+.bottomGrid {
+  display: grid;
+  grid-template-columns: 1fr 1.3fr;
+  gap: 24px;
+}
+@media (max-width: 1200px) {
+  .consoleGrid {
+    grid-template-columns: minmax(240px, .8fr) minmax(360px, 1.4fr);
+  }
+  .consoleGrid > :last-child { grid-column: span 2; }
+}
+@media (max-width: 860px) {
+  .consoleGrid { grid-template-columns: 1fr; }
+  .consoleGrid > :last-child { grid-column: span 1; }
+  .bottomGrid { grid-template-columns: 1fr; }
+}

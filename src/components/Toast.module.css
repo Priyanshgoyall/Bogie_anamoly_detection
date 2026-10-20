@@ -1,0 +1,31 @@
+.region {
+  position: fixed;
+  z-index: 300;
+  right: 20px;
+  bottom: 20px;
+  display: grid;
+  gap: 8px;
+  max-width: min(340px, calc(100vw - 40px));
+}
+.toast {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 12px 14px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  background: var(--panel);
+  box-shadow: var(--shadow-lg);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ink-2);
+  animation: toastIn .22s ease both;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+@keyframes toastIn { from { opacity: 0; transform: translateY(10px); } }
+.success { border-color: rgba(8,185,129,.3); color: var(--green-text); background: var(--green-soft); }
+.warn { border-color: rgba(223,141,0,.3); color: #926000; background: var(--amber-soft); }
+.dismiss { background: none; border: none; cursor: pointer; font-size: 18px; line-height: 1; color: inherit; opacity: .7; padding: 0 4px; }
+.dismiss:hover { opacity: 1; }

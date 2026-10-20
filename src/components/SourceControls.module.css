@@ -1,0 +1,82 @@
+.card { padding: 26px; }
+.title { margin: 6px 0 0; }
+.sourceBtn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 16px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  background: var(--glass-bg);
+  color: var(--ink);
+  text-align: left;
+  transition: border-color .15s, background .15s, transform .15s;
+  backdrop-filter: blur(8px);
+  margin-bottom: 12px;
+}
+.sourceBtn:hover { border-color: rgba(27,87,233,.3); background: var(--blue-soft); transform: translateY(-1px); }
+.selected { border-color: rgba(27,87,233,.4) !important; background: var(--blue-soft) !important; }
+.sourceBtn strong { display: block; font-size: 15px; font-weight: 700; letter-spacing: -.01em; }
+.sourceBtn small { display: block; margin-top: 3px; color: var(--muted); font-size: 12px; }
+.sourceIcon {
+  width: 44px; height: 44px;
+  display: grid; flex-shrink: 0; place-items: center;
+  border-radius: 10px;
+  background: var(--blue-soft);
+  color: var(--blue);
+}
+.sourceMuted { background: var(--soft); color: var(--muted); }
+.endFeedBtn {
+  width: 100%;
+  min-height: 36px;
+  margin-bottom: 12px;
+  border: 1px solid rgba(220,63,93,.3);
+  border-radius: var(--radius-xs);
+  background: var(--red-soft);
+  color: #b72645;
+  font-size: 12px;
+  font-weight: 700;
+  transition: background .15s;
+}
+.endFeedBtn:hover { background: #ffd8df; }
+.demoBtn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 700;
+  padding: 0;
+  background: none;
+  border: none;
+  cursor: pointer;
+  margin-top: 2px;
+}
+.demoBtn span { color: var(--blue); font-size: 15px; }
+.demoBtn:hover { color: var(--blue); }
+.startBtn { width: 100%; min-height: 64px; font-size: 16px; margin-top: 12px; }
+.gateList {
+  list-style: none;
+  margin: 8px 0 0;
+  padding: 12px 14px;
+  background: var(--amber-soft);
+  border: 1px solid rgba(223,141,0,.25);
+  border-radius: var(--radius-xs);
+}
+.gateItem {
+  font-size: 11px;
+  font-weight: 600;
+  color: #7a5200;
+  padding: 2px 0;
+  padding-left: 14px;
+  position: relative;
+}
+.gateItem::before {
+  content: '·';
+  position: absolute;
+  left: 4px;
+  color: #bf8700;
+  font-weight: 900;
+}
+.clearBtn { width: 100%; margin-top: 14px; }
