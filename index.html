@@ -1,0 +1,235 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#155eef" />
+    <title>BogieVision | Foreign Object Detection</title>
+    <link rel="stylesheet" href="styles.css?v=4" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="topbar">
+        <a class="brand" href="#" aria-label="BogieVision home">
+          <span class="brand-mark" aria-hidden="true">
+            <svg viewBox="0 0 32 32" fill="none"><path d="M10 7v7m12-7v7M7 18c.5 4.6 3.6 7 9 7s8.5-2.4 9-7M8 14h16l2 5H6l2-5Z" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="11" cy="22" r="1.5" fill="currentColor"/><circle cx="21" cy="22" r="1.5" fill="currentColor"/></svg>
+          </span>
+          <span><strong>BogieVision</strong><small>Foreign object inspection console</small></span>
+        </a>
+        <div class="header-actions">
+          <button class="icon-button" id="themeToggle" aria-label="Toggle colour mode" title="Toggle colour mode">
+            <svg viewBox="0 0 24 24" fill="none"><path d="M12 3v2m0 14v2M3 12h2m14 0h2M5.6 5.6 7 7m10 10 1.4 1.4m0-12.8L17 7M7 17l-1.4 1.4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/><circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="1.7"/></svg>
+          </button>
+          <div class="secure"><span class="shield-icon">✓</span> Secure session</div>
+          <button class="avatar" aria-label="Operator profile">PV</button>
+        </div>
+      </header>
+
+      <main>
+        <section class="hero-panel">
+          <div>
+            <p class="eyebrow">Inspection workspace <span class="shift-chip">SHIFT B</span></p>
+            <h1>Surveillance under a bogie</h1>
+            <p class="hero-copy">Acquire the source, scan for anomalies, then review the evidence before the vehicle is released.</p>
+          </div>
+          <div class="system-online"><span></span> System online</div>
+        </section>
+
+        <section class="card record-card" aria-labelledby="recordTitle">
+          <div class="record-heading">
+            <div class="section-heading">
+              <p class="step-label">Inspection record</p>
+              <h2 id="recordTitle">Vehicle and location details</h2>
+            </div>
+            <span class="record-state" id="caseState">Record incomplete</span>
+          </div>
+          <div class="record-fields">
+            <label class="field-control"><span>Train number <b>*</b></span><input id="trainNumber" autocomplete="off" placeholder="e.g. WAP-7 30723" /></label>
+            <label class="field-control"><span>Coach / bogie</span><input id="coachBogie" autocomplete="off" placeholder="e.g. B2 · Bogie 01" /></label>
+            <label class="field-control"><span>Inspection location <b>*</b></span><input id="inspectionLocation" autocomplete="off" placeholder="e.g. Pit line 3, New Delhi" /></label>
+            <label class="field-control"><span>Officer ID</span><input id="officerId" autocomplete="off" placeholder="Badge or staff ID" /></label>
+            <button class="secondary-button save-record" id="saveRecordButton">Save record</button>
+          </div>
+          <p class="record-notice" id="recordNotice">Train number and inspection location are required before the detection scan.</p>
+        </section>
+
+        <section class="console-grid">
+          <aside class="card control-card">
+            <div class="section-heading">
+              <p class="step-label">1. Choose source</p>
+              <h2>Inspection controls</h2>
+            </div>
+            <div class="rule"></div>
+            <input id="fileInput" type="file" accept="image/png,image/jpeg,image/webp" hidden />
+            <button class="source-button selected" id="uploadButton">
+              <span class="source-icon"><svg viewBox="0 0 24 24" fill="none"><path d="M12 16V4m0 0L8 8m4-4 4 4M5 14v5h14v-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+              <span><strong>Upload image</strong><small>JPG, PNG, or WebP file</small></span>
+            </button>
+            <button class="source-button" id="cameraButton">
+              <span class="source-icon muted"><svg viewBox="0 0 24 24" fill="none"><path d="M4 8h3l1.3-2h7.4L17 8h3v11H4V8Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><circle cx="12" cy="13.2" r="3.2" stroke="currentColor" stroke-width="1.8"/></svg></span>
+              <span><strong id="cameraButtonText">Open live camera</strong><small id="cameraButtonSubtext">Use connected inspection feed</small></span>
+            </button>
+            <button class="demo-link" id="demoButton"><span>◈</span> Load demonstration frame</button>
+            <div class="rule"></div>
+            <p class="step-label">2. Run inspection</p>
+            <button class="primary-button large" id="startButton" disabled>
+              <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="m8 5 11 7-11 7V5Z"/></svg>
+              <span>Start detection</span>
+            </button>
+            <p class="hint" id="startHint">Select an image or open the camera to continue.</p>
+            <button class="secondary-button" id="clearButton">
+              <svg viewBox="0 0 24 24" fill="none"><path d="M6 8a7 7 0 1 1-1 7m1-7V3m0 5h5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              Clear workspace
+            </button>
+          </aside>
+
+          <section class="card source-card">
+            <div class="source-header">
+              <div class="section-heading">
+                <p class="step-label">Source view</p>
+                <h2>Undercarriage image</h2>
+              </div>
+              <span class="source-tag" id="sourceTag">Awaiting source</span>
+            </div>
+            <div class="rule"></div>
+            <div class="image-stage empty" id="imageStage">
+              <div class="empty-state" id="emptyState">
+                <span class="empty-icon"><svg viewBox="0 0 24 24" fill="none"><rect x="3" y="4" width="18" height="16" rx="2" stroke="currentColor" stroke-width="1.8"/><circle cx="8.5" cy="9" r="1.5" fill="currentColor"/><path d="m4 18 5-5 3.5 3.5 2.5-2.5 5 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+                <h3>No source selected</h3>
+                <p>Upload a captured image or connect the<br />live inspection camera to begin.</p>
+              </div>
+              <div class="media-wrap" id="mediaWrap" hidden>
+                <img id="sourceImage" alt="Undercarriage inspection source" hidden />
+                <video id="sourceVideo" autoplay playsinline muted hidden></video>
+                <div class="scan-line" id="scanLine" hidden></div>
+                <div class="overlay-layer" id="overlayLayer"></div>
+                <div class="frame-meta" id="frameMeta">CAM 02 · FRAME 4081</div>
+                <div class="camera-controls" id="cameraControls" hidden>
+                  <button id="captureButton">Capture frame</button>
+                  <button id="stopCameraButton" class="quiet">End feed</button>
+                </div>
+              </div>
+            </div>
+            <div class="image-footer">
+              <span id="imageFooterInfo">No image metadata available</span>
+              <span class="ready-dot" id="imageReadyDot"></span>
+            </div>
+            <div class="image-information" id="imageInformation" aria-label="Image information">
+              <div><span>Source</span><strong id="infoSource">—</strong></div>
+              <div><span>Status</span><strong id="infoStatus">No image</strong></div>
+              <div><span>Resolution</span><strong id="infoResolution">—</strong></div>
+              <div><span>File size</span><strong id="infoFileSize">—</strong></div>
+              <div><span>Image location</span><strong id="infoLocation">—</strong></div>
+              <div><span>Acquired</span><strong id="infoTimestamp">—</strong></div>
+            </div>
+            <div class="image-tools" id="imageTools" hidden aria-label="Image review tools">
+              <span>Review view</span>
+              <button class="image-view-control active" data-view="original">Original</button>
+              <button class="image-view-control" data-view="grayscale">Grayscale</button>
+              <button class="image-view-control" data-view="threshold">Threshold</button>
+              <button class="image-view-control" data-view="edges">Edge map</button>
+            </div>
+          </section>
+
+          <aside class="card monitor-card">
+            <div class="monitor-title-row">
+              <div class="section-heading">
+                <p class="step-label">3. Monitor scan</p>
+                <h2>Detection status</h2>
+              </div>
+              <span class="pulse-glyph">⌁</span>
+            </div>
+            <div class="rule"></div>
+            <div class="status-box">
+              <div class="status-row"><strong>System status</strong><span class="status-pill" id="statusPill">Ready</span></div>
+              <div class="progress-track"><span id="progressBar"></span></div>
+              <div class="progress-label"><span id="progressText">Analysis progress</span><strong id="progressValue">0%</strong></div>
+            </div>
+            <div class="profile-label">Inspection profile</div>
+            <button class="mode-toggle" id="accuracyToggle" role="switch" aria-checked="true">
+              <span><strong>High accuracy mode</strong><small>Enhanced anomaly review</small></span>
+              <i class="toggle on"><b></b></i>
+            </button>
+            <div class="record-box">
+              <div><strong>Result record</strong><small id="recordText">Available after each scan</small></div>
+              <span class="record-icon">⌗</span>
+            </div>
+            <button class="primary-button monitor-run" id="monitorRunButton" disabled><svg viewBox="0 0 24 24" fill="currentColor"><path d="m8 5 11 7-11 7V5Z"/></svg> Run detection</button>
+          </aside>
+        </section>
+
+        <section class="card pipeline-card" aria-labelledby="pipelineTitle">
+          <div class="pipeline-heading">
+            <div class="section-heading">
+              <p class="step-label">Image preparation pipeline</p>
+              <h2 id="pipelineTitle">Acquisition and processing checklist</h2>
+            </div>
+            <p id="pipelineSummary">Awaiting an inspection image.</p>
+          </div>
+          <div class="process-grid">
+            <div class="process-step" data-process="open"><span class="process-marker"><input type="checkbox" disabled aria-label="Open image" /></span><span><strong>Open image</strong><small>Source loaded</small></span><em>Pending</em></div>
+            <div class="process-step" data-process="display"><span class="process-marker"><input type="checkbox" disabled aria-label="Display image" /></span><span><strong>Display image</strong><small>Frame rendered</small></span><em>Pending</em></div>
+            <div class="process-step" data-process="information"><span class="process-marker"><input type="checkbox" disabled aria-label="Image information" /></span><span><strong>Image information</strong><small>Metadata read</small></span><em>Pending</em></div>
+            <div class="process-step" data-process="grayscale"><span class="process-marker"><input type="checkbox" disabled aria-label="Grayscale" /></span><span><strong>Grayscale</strong><small>Luminance conversion</small></span><em>Pending</em></div>
+            <div class="process-step" data-process="blur"><span class="process-marker"><input type="checkbox" disabled aria-label="Blur" /></span><span><strong>Blur</strong><small>Noise reduction</small></span><em>Pending</em></div>
+            <div class="process-step" data-process="threshold"><span class="process-marker"><input type="checkbox" disabled aria-label="Threshold" /></span><span><strong>Threshold</strong><small>Foreground isolation</small></span><em>Pending</em></div>
+            <div class="process-step" data-process="edges"><span class="process-marker"><input type="checkbox" disabled aria-label="Edge detection" /></span><span><strong>Edge detection</strong><small>Contour extraction</small></span><em>Pending</em></div>
+            <div class="process-step" data-process="quality"><span class="process-marker"><input type="checkbox" disabled aria-label="Quality gate" /></span><span><strong>Quality gate</strong><small>Frame suitability check</small></span><em>Pending</em></div>
+            <div class="process-step" data-process="scan"><span class="process-marker"><input type="checkbox" disabled aria-label="Foreign object scan" /></span><span><strong>Foreign-object scan</strong><small>Model review</small></span><em>Pending</em></div>
+            <div class="process-step" data-process="report"><span class="process-marker"><input type="checkbox" disabled aria-label="Report record" /></span><span><strong>Report record</strong><small>Evidence exported</small></span><em>Pending</em></div>
+          </div>
+        </section>
+
+        <section class="results-section" id="resultsSection" hidden>
+          <div class="result-heading-row">
+            <div>
+              <p class="eyebrow">Inspection results</p>
+              <h2>Evidence review</h2>
+            </div>
+            <div class="result-actions">
+              <button class="secondary-button compact" id="exportButton">Export report</button>
+              <button class="secondary-button compact" id="newScanButton">New scan</button>
+            </div>
+          </div>
+          <div class="result-summary" id="resultSummary"></div>
+          <div class="findings-grid" id="findingsGrid"></div>
+          <div class="decision-bar" id="decisionBar">
+            <div><span class="decision-dot"></span><strong id="decisionTitle">Operator review required</strong><small id="decisionDescription">Confirm the findings before choosing a release action.</small></div>
+            <div class="decision-actions">
+              <button class="secondary-button compact" id="maintenanceButton">Mark for maintenance</button>
+              <button class="primary-button compact" id="releaseButton">Release vehicle</button>
+            </div>
+          </div>
+        </section>
+
+        <section class="bottom-grid">
+          <div class="card checklist-card">
+            <div class="section-heading"><p class="step-label">Pre-scan checklist</p><h2>Inspection readiness</h2></div>
+            <div class="checklist">
+              <label><input type="checkbox" checked /> <span>Lighting calibration verified</span></label>
+              <label><input type="checkbox" checked /> <span>Vehicle ID recorded</span></label>
+              <label><input type="checkbox" id="operatorCheck" /> <span>Operator area clear</span></label>
+            </div>
+          </div>
+          <div class="card activity-card">
+            <div class="section-heading"><p class="step-label">Officer audit trail</p><h2>Detection and decision log</h2></div>
+            <div class="activity-list" id="activityList">
+              <p class="activity-empty">No inspection events yet.</p>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+    <div class="toast-region" id="toastRegion" aria-live="polite"></div>
+    <div class="modal-backdrop" id="modalBackdrop" hidden>
+      <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+        <button class="modal-close" id="modalClose" aria-label="Close">×</button>
+        <span class="modal-symbol" id="modalSymbol">✓</span>
+        <h2 id="modalTitle">Vehicle release recorded</h2>
+        <p id="modalBody">The inspection decision has been saved to this session.</p>
+        <button class="primary-button compact" id="modalConfirm">Done</button>
+      </div>
+    </div>
+    <script src="app.js?v=2"></script>
+  </body>
+</html>
