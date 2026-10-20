@@ -1,87 +1,217 @@
-.card { padding: 26px; }
-.titleRow { display: flex; justify-content: space-between; align-items: flex-start; }
+.card { padding: 22px; }
+
+.titleRow {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
 .title { margin-top: 6px; }
-.glyph { color: var(--blue); font-family: serif; font-size: 36px; line-height: 1; padding-top: 4px; }
+
+.glyph {
+  color: var(--blue);
+  font-family: serif;
+  font-size: 32px;
+  line-height: 1;
+  padding-top: 6px;
+  opacity: 0.7;
+  flex-shrink: 0;
+}
+
+/* Simulation disclosure — safety-critical, always visible */
 .simBadge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  margin-bottom: 14px;
+  padding: 7px 12px;
+  border-radius: var(--r-xs);
+  background: var(--amber-soft);
+  border: 1px solid var(--amber-border);
+  color: var(--amber-text);
   font-size: 10px;
   font-weight: 700;
-  letter-spacing: .04em;
-  color: #7a5200;
-  background: var(--amber-soft);
-  border: 1px solid rgba(223,141,0,.25);
-  border-radius: var(--radius-xs);
-  padding: 6px 10px;
-  margin-bottom: 16px;
+  letter-spacing: 0.02em;
   text-align: center;
+  line-height: 1.35;
 }
-[data-theme="dark"] .simBadge { color: #f0c060; }
+.simBadge::before {
+  content: '⚠';
+  font-size: 11px;
+  flex-shrink: 0;
+}
+
+/* Status box */
 .statusBox {
-  padding: 20px;
-  border: 1px solid var(--line);
-  border-radius: var(--radius-sm);
-  background: var(--soft);
+  padding: 16px 18px;
+  border-radius: var(--r);
+  background: var(--glass-bg);
+  border: 1px solid var(--line-strong);
+  backdrop-filter: var(--blur-sm);
+  -webkit-backdrop-filter: var(--blur-sm);
+  box-shadow: var(--shadow-xs), inset 0 1px 0 var(--glass-shine);
 }
-.statusRow { display: flex; justify-content: space-between; align-items: center; gap: 12px; color: var(--muted); font-size: 15px; }
-.pill { padding: 6px 12px; border-radius: 99px; font-size: 11px; font-weight: 700; border: 1px solid var(--line); }
-.pillIdle { background: var(--glass-bg); color: var(--muted); }
-.pillScanning { background: var(--amber-soft); color: #986000; border-color: rgba(223,141,0,.3); }
-.pillComplete { background: var(--green-soft); color: var(--green-text); border-color: rgba(8,185,129,.3); }
-.progressTrack { height: 10px; overflow: hidden; margin: 22px 0 10px; border-radius: 99px; background: var(--line); }
-.progressBar { display: block; height: 100%; border-radius: inherit; background: linear-gradient(90deg, var(--blue), #5490ff); transition: width .25s ease; }
-.progressLabel { display: flex; justify-content: space-between; color: var(--muted); font-size: 12px; }
-.progressLabel strong { color: var(--ink-2); }
-.profileLabel { margin: 28px 0 14px; color: var(--muted); font-size: 10px; font-weight: 800; letter-spacing: .18em; text-transform: uppercase; }
+
+.statusRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+/* Animated status pill */
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: 99px;
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  border: 1px solid;
+  transition: all var(--t);
+  white-space: nowrap;
+}
+.pillDot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+  opacity: 0.75;
+}
+.pillIdle {
+  background: var(--glass-bg);
+  color: var(--muted);
+  border-color: var(--line-strong);
+}
+.pillScanning {
+  background: var(--amber-soft);
+  color: var(--amber-text);
+  border-color: var(--amber-border);
+  animation: scanPulse 1.5s ease-in-out infinite;
+}
+@keyframes scanPulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.72; }
+}
+.pillComplete {
+  background: var(--green-soft);
+  color: var(--green-text);
+  border-color: var(--green-border);
+}
+
+/* Progress */
+.progressTrack {
+  height: 6px;
+  border-radius: 99px;
+  background: var(--line);
+  margin: 16px 0 10px;
+  overflow: hidden;
+}
+.progressBar {
+  display: block;
+  height: 100%;
+  border-radius: 99px;
+  background: linear-gradient(90deg, var(--blue) 0%, var(--blue-light) 100%);
+  transition: width 0.22s ease;
+  position: relative;
+  overflow: hidden;
+}
+.progressBar::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.25) 50%, transparent 100%);
+  animation: shimmer 1.8s linear infinite;
+}
+@keyframes shimmer { 0% { transform: translateX(-100%); } 100% { transform: translateX(200%); } }
+
+.progressLabel {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 500;
+}
+.progressLabel strong { color: var(--ink-2); font-size: 12px; font-weight: 700; }
+
+/* Profile section */
+.profileLabel {
+  margin: 20px 0 10px;
+  color: var(--caption);
+  font-size: 9.5px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+/* Accuracy toggle switch */
 .toggle {
   width: 100%;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 14px 16px;
-  border: 1px solid var(--line);
-  border-radius: var(--radius-sm);
+  gap: 12px;
+  padding: 13px 15px;
+  border-radius: var(--r);
+  border: 1px solid var(--line-strong);
   background: var(--glass-bg);
   color: var(--ink);
   text-align: left;
-  gap: 12px;
-  backdrop-filter: blur(8px);
   cursor: pointer;
-  transition: border-color .15s;
+  backdrop-filter: var(--blur-sm);
+  -webkit-backdrop-filter: var(--blur-sm);
+  box-shadow: var(--shadow-xs), inset 0 1px 0 var(--glass-shine);
+  transition: border-color var(--t-fast), background var(--t-fast);
 }
-.toggle:hover { border-color: var(--blue-border); }
+.toggle:hover { border-color: var(--blue-border); background: var(--blue-soft); }
 .toggle:focus-visible { outline: 2px solid var(--blue); outline-offset: 2px; }
-.toggle strong { display: block; font-size: 14px; font-weight: 700; }
-.toggle small { display: block; margin-top: 3px; color: var(--muted); font-size: 11px; }
+.toggle strong { display: block; font-size: 13px; font-weight: 700; letter-spacing: -0.01em; }
+.toggle small { display: block; margin-top: 2px; color: var(--muted); font-size: 11px; font-weight: 400; }
+
+/* Toggle switch track/thumb */
 .toggleTrack {
-  width: 44px; height: 26px;
   position: relative;
+  width: 40px; height: 24px;
   border-radius: 99px;
-  background: var(--line);
-  transition: background .2s;
+  background: var(--line-strong);
   flex-shrink: 0;
+  transition: background var(--t);
   display: block;
 }
 .toggleOn { background: var(--blue); }
 .toggleThumb {
-  width: 18px; height: 18px;
   position: absolute;
-  top: 4px; left: 4px;
+  width: 18px; height: 18px;
+  top: 3px; left: 3px;
   border-radius: 50%;
   background: #fff;
-  box-shadow: 0 1px 3px rgba(0,0,0,.2);
-  transition: left .2s;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.20), 0 2px 8px rgba(0,0,0,0.12);
+  transition: left var(--t);
 }
-.toggleOn .toggleThumb { left: 22px; }
+.toggleOn .toggleThumb { left: 19px; }
+
+/* Record box */
 .recordBox {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-top: 14px;
-  padding: 14px 16px;
+  gap: 12px;
+  margin-top: 10px;
+  padding: 12px 15px;
+  border-radius: var(--r);
   border: 1px solid var(--line);
-  border-radius: var(--radius-sm);
-  background: var(--soft);
+  background: var(--glass-bg);
+  backdrop-filter: var(--blur-sm);
+  -webkit-backdrop-filter: var(--blur-sm);
 }
-.recordBox strong { display: block; font-size: 13px; font-weight: 700; }
-.recordBox small { display: block; margin-top: 3px; color: var(--muted); font-size: 11px; }
-.recordIcon { color: var(--muted); font-size: 24px; }
-.runBtn { width: 100%; margin-top: 28px; }
+.recordBox strong { display: block; font-size: 12.5px; font-weight: 700; }
+.recordBox small { display: block; margin-top: 2px; color: var(--muted); font-size: 11px; font-weight: 400; }
+.recordIcon { color: var(--caption); font-size: 22px; flex-shrink: 0; }
+
+.runBtn { width: 100%; margin-top: 14px; min-height: 48px; font-size: 14px; font-weight: 700; }

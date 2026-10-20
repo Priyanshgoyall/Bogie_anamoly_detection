@@ -1,24 +1,48 @@
-.shell { min-height: 100vh; }
+.shell { min-height: 100vh; display: flex; flex-direction: column; }
+
+/* 3-column console grid: controls | viewer+meta | monitor */
 .consoleGrid {
   display: grid;
-  grid-template-columns: minmax(260px, .8fr) minmax(440px, 1.7fr) minmax(270px, .8fr);
-  gap: 24px;
+  grid-template-columns: minmax(248px, 0.75fr) minmax(460px, 1.6fr) minmax(256px, 0.75fr);
+  gap: 20px;
   align-items: start;
 }
-.viewerColumn { display: flex; flex-direction: column; gap: 0; min-width: 0; }
+
+/* viewer column stacks the image card and the metadata below it */
+.viewerColumn {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  min-width: 0;
+}
+
+/* bottom two-up row: pre-scan checklist | activity log */
 .bottomGrid {
   display: grid;
-  grid-template-columns: 1fr 1.3fr;
-  gap: 24px;
+  grid-template-columns: 1fr 1.4fr;
+  gap: 20px;
 }
-@media (max-width: 1200px) {
+
+/* ── Responsive breakpoints ── */
+@media (max-width: 1240px) {
   .consoleGrid {
-    grid-template-columns: minmax(240px, .8fr) minmax(360px, 1.4fr);
+    grid-template-columns: minmax(240px, 0.78fr) minmax(360px, 1.4fr);
   }
-  .consoleGrid > :last-child { grid-column: span 2; }
+  /* Monitor drops to span both columns */
+  .consoleGrid > :last-child {
+    grid-column: span 2;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+  /* Override padding on the last grid child (DetectionMonitor) for 2-up layout */
+  .consoleGrid > :last-child > * {
+    min-width: 0;
+  }
 }
-@media (max-width: 860px) {
+
+@media (max-width: 900px) {
   .consoleGrid { grid-template-columns: 1fr; }
-  .consoleGrid > :last-child { grid-column: span 1; }
+  .consoleGrid > :last-child { grid-column: span 1; display: block; }
   .bottomGrid { grid-template-columns: 1fr; }
 }

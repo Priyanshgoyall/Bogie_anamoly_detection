@@ -1,18 +1,38 @@
-.card { padding: 24px 26px; }
+.card { padding: 22px 24px; }
 .title { margin: 6px 0 16px; }
-.list { display: grid; gap: 0; }
-.empty { color: var(--muted); font-size: 13px; }
+
+.list { display: grid; }
+.empty { color: var(--muted); font-size: 13px; font-weight: 500; }
+
 .item {
   display: grid;
   grid-template-columns: 8px 1fr auto;
-  gap: 10px;
+  gap: 0 11px;
   align-items: start;
-  padding: 9px 0;
+  padding: 10px 0;
   border-top: 1px solid var(--line);
-  color: var(--muted);
-  font-size: 12px;
 }
-.item:first-child { border-top: none; }
-.dot { width: 8px; height: 8px; border-radius: 50%; margin-top: 4px; flex-shrink: 0; }
-.message { line-height: 1.4; }
-.time { color: var(--faint); font-size: 10px; white-space: nowrap; margin-top: 1px; }
+.item:first-child { border-top: none; padding-top: 0; }
+
+.dot {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  margin-top: 5px;
+  flex-shrink: 0;
+}
+
+.message {
+  font-size: 12.5px;
+  font-weight: 500;
+  color: var(--muted);
+  line-height: 1.45;
+}
+
+.time {
+  color: var(--caption);
+  font-size: 10.5px;
+  font-weight: 500;
+  white-space: nowrap;
+  margin-top: 1px;
+  font-variant-numeric: tabular-nums;
+}

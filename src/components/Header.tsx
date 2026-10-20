@@ -1,45 +1,55 @@
 import React from 'react';
-import { Sun, Moon } from 'lucide-react';
+import { Moon, Sun } from 'lucide-react';
 import styles from './Header.module.css';
 
-interface Props {
-  theme: 'light' | 'dark';
-  onToggleTheme: () => void;
-}
-
-const BogieIcon = () => (
-  <svg viewBox="0 0 32 32" fill="none" aria-hidden="true" className={styles.brandSvg}>
-    <path d="M10 7v7m12-7v7M7 18c.5 4.6 3.6 7 9 7s8.5-2.4 9-7M8 14h16l2 5H6l2-5Z"
-      stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"/>
-    <circle cx="11" cy="22" r="1.5" fill="currentColor"/>
-    <circle cx="21" cy="22" r="1.5" fill="currentColor"/>
-  </svg>
-);
+type Theme = 'light' | 'dark';
+interface Props { theme: Theme; onToggleTheme: () => void; }
 
 export const Header: React.FC<Props> = ({ theme, onToggleTheme }) => (
   <header className={styles.topbar} role="banner">
-    <a className={styles.brand} href="#" aria-label="BogieVision home">
-      <span className={styles.brandMark} aria-hidden="true"><BogieIcon /></span>
+    <a href="/" className={styles.brand} aria-label="BogieVision home">
+      <span className={styles.brandMark} aria-hidden="true">
+        {/* Inline SVG – bogie / wheel icon */}
+        <svg className={styles.brandSvg} viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <rect x="2" y="8" width="20" height="9" rx="2" stroke="currentColor" strokeWidth="1.7"/>
+          <circle cx="7"  cy="19" r="2" stroke="currentColor" strokeWidth="1.7"/>
+          <circle cx="17" cy="19" r="2" stroke="currentColor" strokeWidth="1.7"/>
+          <path d="M7 8V5m10 3V5M2 13h20" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round"/>
+        </svg>
+      </span>
       <span>
         <strong className={styles.brandName}>BogieVision</strong>
-        <small className={styles.brandSub}>Foreign object inspection console</small>
+        <small className={styles.brandSub}>Foreign Object Inspection Console</small>
       </span>
     </a>
+
     <div className={styles.actions}>
-      <button
-        className={styles.iconBtn}
-        id="themeToggle"
-        aria-label={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
-        title="Toggle colour mode"
-        onClick={onToggleTheme}
-      >
-        {theme === 'dark' ? <Sun size={20} /> : <Moon size={20} />}
-      </button>
-      <div className={styles.localSession} aria-label="Local session indicator">
+      {/* Session badge */}
+      <div className={styles.localSession} role="status" aria-label="Session type: local session">
         <span className={styles.checkIcon} aria-hidden="true">✓</span>
         Local session
       </div>
-      <button className={styles.avatar} aria-label="Operator profile" id="operatorAvatar">PV</button>
+
+      {/* Theme toggle */}
+      <button
+        className={styles.iconBtn}
+        id="themeToggle"
+        onClick={onToggleTheme}
+        aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
+        title={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
+      >
+        {theme === 'dark' ? <Sun size={16} /> : <Moon size={16} />}
+      </button>
+
+      {/* Operator avatar */}
+      <div
+        className={styles.avatar}
+        style={{ display: 'grid', placeItems: 'center' }}
+        aria-label="Operator: PV"
+        role="img"
+      >
+        PV
+      </div>
     </div>
   </header>
 );

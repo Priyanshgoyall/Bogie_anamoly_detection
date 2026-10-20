@@ -1,31 +1,60 @@
 .region {
   position: fixed;
-  z-index: 300;
+  z-index: 600;
   right: 20px;
   bottom: 20px;
   display: grid;
-  gap: 8px;
-  max-width: min(340px, calc(100vw - 40px));
+  gap: 7px;
+  max-width: min(340px, calc(100vw - 32px));
 }
+
 .toast {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 10px;
-  padding: 12px 14px;
-  border: 1px solid var(--line);
-  border-radius: var(--radius-sm);
-  background: var(--panel);
-  box-shadow: var(--shadow-lg);
-  font-size: 13px;
-  font-weight: 600;
+  padding: 11px 14px;
+  border-radius: var(--r);
+  background: var(--panel-raised);
+  border: 1px solid var(--line-strong);
+  box-shadow: var(--shadow-lg), inset 0 1px 0 var(--glass-shine);
+  font-size: 12.5px;
+  font-weight: 500;
   color: var(--ink-2);
-  animation: toastIn .22s ease both;
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: var(--blur);
+  -webkit-backdrop-filter: var(--blur);
+  animation: toastIn 0.22s cubic-bezier(0.16,1,0.3,1) both;
+  letter-spacing: -0.01em;
 }
-@keyframes toastIn { from { opacity: 0; transform: translateY(10px); } }
-.success { border-color: rgba(8,185,129,.3); color: var(--green-text); background: var(--green-soft); }
-.warn { border-color: rgba(223,141,0,.3); color: #926000; background: var(--amber-soft); }
-.dismiss { background: none; border: none; cursor: pointer; font-size: 18px; line-height: 1; color: inherit; opacity: .7; padding: 0 4px; }
+@keyframes toastIn {
+  from { opacity: 0; transform: translateY(10px) scale(0.96); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.success {
+  background: var(--green-soft);
+  border-color: var(--green-border);
+  color: var(--green-text);
+  font-weight: 600;
+}
+.warn {
+  background: var(--amber-soft);
+  border-color: var(--amber-border);
+  color: var(--amber-text);
+  font-weight: 600;
+}
+
+.dismiss {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 18px;
+  line-height: 1;
+  color: inherit;
+  opacity: 0.55;
+  padding: 0 2px;
+  flex-shrink: 0;
+  transition: opacity var(--t-fast);
+  border-radius: 3px;
+}
 .dismiss:hover { opacity: 1; }

@@ -10,16 +10,16 @@ export const ProcessingChecklist: React.FC<Props> = ({ processState, hasImage })
   const total = PROCESS_KEYS.length;
   const summary = hasImage
     ? completeCount > 0
-      ? `${completeCount} of ${total} processing checks complete.`
-      : 'Awaiting scan start.'
-    : 'Awaiting an inspection image.';
+      ? `${completeCount} of ${total} checks complete`
+      : 'Awaiting scan start'
+    : 'Awaiting an inspection image';
 
   return (
     <section className={`glass-card ${styles.card}`} aria-labelledby="pipelineTitle">
       <div className={styles.heading}>
         <div>
           <p className="step-label">Image preparation pipeline</p>
-          <h2 id="pipelineTitle">Acquisition and processing checklist</h2>
+          <h2 id="pipelineTitle">Acquisition &amp; processing checklist</h2>
         </div>
         <p className={styles.summary} aria-live="polite">{summary}</p>
       </div>
@@ -35,20 +35,16 @@ export const ProcessingChecklist: React.FC<Props> = ({ processState, hasImage })
               role="listitem"
               aria-label={`${label}: ${done ? 'complete' : 'pending'}`}
             >
-              <span className={styles.marker} aria-hidden="true">
-                <input
-                  type="checkbox"
-                  tabIndex={-1}
-                  readOnly
-                  checked={done}
-                  aria-hidden="true"
-                />
-              </span>
-              <span>
-                <strong className={styles.stepLabel}>{label}</strong>
-                <small className={styles.stepSub}>{sub}</small>
-              </span>
-              <em className={styles.stepStatus}>{done ? 'Complete' : 'Pending'}</em>
+              <div className={styles.stepTop}>
+                <span className={styles.marker} aria-hidden="true">
+                  <svg className={styles.markerCheck} viewBox="0 0 8 8" fill="none">
+                    <path d="M1.5 4L3.5 6L6.5 2" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                </span>
+                <span className={styles.stepLabel}>{label}</span>
+              </div>
+              <span className={styles.stepSub}>{sub}</span>
+              <em className={styles.stepStatus} aria-hidden="true">{done ? '✓ Complete' : 'Pending'}</em>
             </div>
           );
         })}

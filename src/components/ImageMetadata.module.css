@@ -1,33 +1,38 @@
 .grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 8px;
-  margin-top: 12px;
-  padding-top: 12px;
+  gap: 6px;
+  margin-top: 10px;
+  padding-top: 10px;
   border-top: 1px solid var(--line);
 }
 .cell {
-  padding: 9px 11px;
-  border-radius: var(--radius-xs);
-  background: var(--soft);
+  padding: 8px 10px;
+  border-radius: var(--r-xs);
+  background: var(--glass-bg);
   border: 1px solid var(--line);
+  backdrop-filter: var(--blur-sm);
+  -webkit-backdrop-filter: var(--blur-sm);
+  transition: background var(--t-fast);
 }
+.cell:hover { background: var(--panel-raised); }
 .label {
   display: block;
-  color: var(--muted);
+  color: var(--caption);
   font-size: 9px;
-  font-weight: 800;
-  letter-spacing: .07em;
+  font-weight: 700;
+  letter-spacing: 0.09em;
   text-transform: uppercase;
+  margin-bottom: 3px;
 }
 .value {
   display: block;
-  margin-top: 4px;
   color: var(--ink-2);
-  font-size: 11px;
-  font-weight: 700;
+  font-size: 11.5px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
-@media (max-width: 700px) { .grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 680px) { .grid { grid-template-columns: repeat(2, 1fr); } }
