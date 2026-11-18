@@ -7,7 +7,7 @@ const ALLOWED_TYPES = ['image/png', 'image/jpeg', 'image/webp'];
 export const SourceControls = ({
   cameraActive,
   hasImage,
-  scanning,
+  scanStatus = 'idle',
   scanGates,
   onUpload,
   onCamera,
@@ -30,7 +30,13 @@ export const SourceControls = ({
     onUpload(file);
   };
 
-  const canScan = !scanning;
+  const isScanning = ['preparing', 'uploading', 'inferring', 'receiving'].includes(scanStatus);
+
+  const buttonText = isScanning
+    ? 'Inference in progress…'
+    : scanStatus === 'failed'
+      ? 'Retry detection'
+      : 'Start detection';
 
   return (
     <aside className={`glass-card ${styles.card}`} aria-label="Source controls">
@@ -53,6 +59,7 @@ export const SourceControls = ({
         id="uploadButton"
         onClick={() => fileInputRef.current?.click()}
         aria-label="Upload image"
+        type="button"
       >
         <span className={styles.sourceIcon}>
           <Upload size={22} />
@@ -68,6 +75,7 @@ export const SourceControls = ({
         id="cameraButton"
         onClick={cameraActive ? onCapture : onCamera}
         aria-label={cameraActive ? 'Capture frame from camera' : 'Open live camera'}
+        type="button"
       >
         <span className={`${styles.sourceIcon} ${!cameraActive ? styles.sourceMuted : ''}`}>
           <Camera size={22} />
@@ -79,12 +87,24 @@ export const SourceControls = ({
       </button>
 
       {cameraActive && (
-        <button className={styles.endFeedBtn} id="endFeedButton" onClick={onEndFeed}>
+        <button
+          className={styles.endFeedBtn}
+          id="endFeedButton"
+          onClick={onEndFeed}
+          type="button"
+          aria-label="End live camera feed"
+        >
           End feed
         </button>
       )}
 
-      <button className={styles.demoBtn} id="demoButton" onClick={onDemo}>
+      <button
+        className={styles.demoBtn}
+        id="demoButton"
+        onClick={onDemo}
+        type="button"
+        aria-label="Load demonstration frame"
+      >
         <span>◈</span> Load demonstration frame
       </button>
 
@@ -94,16 +114,17 @@ export const SourceControls = ({
       <button
         className={`btn-primary ${styles.startBtn}`}
         id="startButton"
-        disabled={scanning}
+        disabled={isScanning}
         onClick={onStart}
-        aria-label="Start detection scan"
-        aria-disabled={scanning}
+        aria-label="Start AI detection scan"
+        aria-disabled={isScanning}
+        type="button"
       >
         <Play size={18} fill="currentColor" />
-        <span>{scanning ? 'Scanning…' : 'Start detection'}</span>
+        <span>{buttonText}</span>
       </button>
 
-      {!scanGates.allowed && !scanning && (
+      {!scanGates.allowed && !isScanning && (
         <ul className={styles.gateList} aria-label="Requirements to start scan" role="list">
           {scanGates.reasons.map((r, i) => (
             <li key={i} className={styles.gateItem}>
@@ -118,6 +139,7 @@ export const SourceControls = ({
         id="clearButton"
         onClick={onClear}
         aria-label="Clear workspace"
+        type="button"
       >
         <RotateCcw size={16} /> Clear workspace
       </button>

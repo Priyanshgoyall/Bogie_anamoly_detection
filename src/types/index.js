@@ -13,7 +13,7 @@ export const PROCESS_LABELS = {
   threshold:   { label: 'Threshold',           sub: 'Foreground isolation' },
   edges:       { label: 'Edge detection',      sub: 'Contour extraction' },
   quality:     { label: 'Quality gate',        sub: 'Min 640×360 check' },
-  scan:        { label: 'Foreign-object scan', sub: 'Simulated scan' },
+  scan:        { label: 'Foreign-object scan', sub: 'AI inference' },
   report:      { label: 'Report record',       sub: 'Evidence exported' },
 };
 

@@ -33,10 +33,10 @@ export const App = () => {
   const {
     record, updateRecord, saveRecord, recordSaved,
     originalUrl, currentView, imageDisplayUrl, imageMeta,
-    switchView,
-    videoRef, cameraActive, openCamera, captureFrame,
+    viewUrls, switchView,
+    videoRef, cameraActive, openCamera, endCameraFeed, captureFrame,
     process,
-    scanStatus, progress, findings, scanNumber, startScan,
+    scanStatus, scanError, inspectionResult, scanNumber, startScan,
     checklist, setChecklist,
     activity,
     toasts, removeToast,
@@ -49,7 +49,6 @@ export const App = () => {
   } = state;
 
   const hasImage = Boolean(originalUrl);
-  const scanning = scanStatus === 'scanning';
 
   // Handle file upload
   const handleUpload = useCallback((file) => {
@@ -59,7 +58,7 @@ export const App = () => {
       fileSize: `${(file.size / 1024 / 1024).toFixed(2)} MB`,
       fileName: file.name,
       acquired: timestamp(),
-    });
+    }, file);
   }, [state]);
 
   const modalSymbol = modalContent?.type === 'release' ? '✓' : '⚑';
@@ -81,12 +80,12 @@ export const App = () => {
           <SourceControls
             cameraActive={cameraActive}
             hasImage={hasImage}
-            scanning={scanning}
+            scanStatus={scanStatus}
             scanGates={scanGates}
             onUpload={handleUpload}
             onCamera={openCamera}
             onCapture={captureFrame}
-            onEndFeed={clearWorkspace}
+            onEndFeed={endCameraFeed}
             onDemo={loadDemo}
             onStart={startScan}
             onClear={clearWorkspace}
@@ -98,8 +97,11 @@ export const App = () => {
               cameraActive={cameraActive}
               hasImage={hasImage}
               currentView={currentView}
-              findings={findings}
-              scanning={scanning}
+              regions={inspectionResult?.regions || []}
+              naturalDimensions={{ width: imageMeta.naturalWidth, height: imageMeta.naturalHeight }}
+              annotatedImageUrl={viewUrls.annotated || inspectionResult?.annotatedImage || null}
+              scanStatus={scanStatus}
+              imageSourceLabel={imageMeta.source}
               videoRef={videoRef}
               onSwitchView={switchView}
             />
@@ -108,21 +110,26 @@ export const App = () => {
 
           <DetectionMonitor
             scanStatus={scanStatus}
-            progress={progress}
+            scanError={scanError}
             scanNumber={scanNumber}
-            findingsCount={findings.length}
+            regionsCount={inspectionResult?.regionsCount ?? 0}
+            verdict={inspectionResult?.verdict ?? null}
+            onRetry={startScan}
           />
         </div>
 
         <ProcessingChecklist processState={process} hasImage={hasImage || cameraActive} />
 
-        {findings.length > 0 && (
+        {(inspectionResult || scanStatus === 'failed') && (
           <FindingsPanel
-            findings={findings}
+            inspectionResult={inspectionResult}
+            scanStatus={scanStatus}
+            scanError={scanError}
             decisionRecord={decisionRecord}
             onRelease={() => recordDecision('release')}
             onMaintenance={() => recordDecision('maintenance')}
             onExport={exportReport}
+            onRetry={startScan}
           />
         )}
 

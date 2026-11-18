@@ -68,11 +68,42 @@
 }
 
 /* Media wrap */
-.mediaWrap { width: 100%; height: 100%; position: relative; background: #0f1520; }
-.image { width: 100%; height: 100%; object-fit: cover; }
-.video { width: 100%; height: 100%; object-fit: cover; transform: scaleX(-1); }
+.mediaWrap {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  background: #0f1520;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
 
-/* Scan line – safety-critical: visible in all modes */
+.imageHolder {
+  position: relative;
+  max-width: 100%;
+  max-height: 100%;
+  display: inline-block;
+  line-height: 0;
+}
+
+.image {
+  max-width: 100%;
+  max-height: 490px;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  display: block;
+}
+
+.video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transform: scaleX(-1);
+}
+
+/* Scan line – visible during scanning */
 .scanLine {
   position: absolute;
   z-index: 5;
@@ -91,7 +122,7 @@
   100% { top: 0; }
 }
 
-/* Overlay layer */
+/* Overlay layer aligned to imageHolder */
 .overlayLayer {
   position: absolute;
   z-index: 3;
@@ -99,22 +130,22 @@
   pointer-events: none;
 }
 
-/* Detection boxes – safety-critical: shape + border, not color alone */
+/* Detection boxes */
 .box {
   position: absolute;
-  border: 2px solid var(--box-c, #f6aa23);
+  border: 2px solid var(--box-c, #ef4565);
   border-radius: 4px;
   animation: boxIn 0.25s ease both;
+  box-sizing: border-box;
 }
 @keyframes boxIn { from { opacity: 0; transform: scale(0.95); } }
 
 .box::before {
-  /* Subtle glow layer */
   content: '';
   position: absolute;
-  inset: -4px;
-  border-radius: 6px;
-  background: radial-gradient(ellipse at center, color-mix(in srgb, var(--box-c, #f6aa23), transparent 60%) 0%, transparent 70%);
+  inset: -3px;
+  border-radius: 5px;
+  background: radial-gradient(ellipse at center, rgba(239, 69, 101, 0.25) 0%, transparent 75%);
   pointer-events: none;
 }
 
@@ -123,22 +154,21 @@
 
 .boxLabel {
   position: absolute;
-  bottom: calc(100% + 5px);
+  bottom: calc(100% + 4px);
   left: -2px;
-  padding: 3px 7px 3px 5px;
-  border-radius: 4px;
-  background: var(--box-c, #f59e0b);
+  padding: 2px 6px;
+  border-radius: 3px;
+  background: var(--box-c, #ef4565);
   color: #fff;
   font-size: 9px;
   font-weight: 800;
   letter-spacing: 0.04em;
   white-space: nowrap;
   box-shadow: 0 2px 6px rgba(0,0,0,0.25);
+  line-height: 1.2;
 }
-/* Ensure critical label is extra visible */
-.critical .boxLabel { background: #ef4565; }
 
-/* Frame meta – always in bottom-left */
+/* Frame meta */
 .frameMeta {
   position: absolute;
   z-index: 4;
@@ -147,14 +177,14 @@
   padding: 4px 8px;
   border-radius: 5px;
   border: 1px solid rgba(255,255,255,0.15);
-  background: rgba(0,0,0,0.55);
+  background: rgba(0,0,0,0.60);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
-  color: rgba(255,255,255,0.80);
+  color: rgba(255,255,255,0.85);
   font-family: var(--font-mono);
   font-size: 9px;
   font-weight: 600;
-  letter-spacing: 0.10em;
+  letter-spacing: 0.08em;
 }
 
 /* Footer strip */
@@ -182,7 +212,7 @@
   box-shadow: 0 0 0 3px var(--green-tint);
 }
 
-/* ── View segmented control ── */
+/* View selector */
 .tools {
   display: flex;
   align-items: center;
@@ -228,6 +258,6 @@
 }
 
 @media (max-width: 760px) {
-  .stage { height: 300px; }
+  .stage { height: 320px; }
   .tools { flex-wrap: wrap; }
 }
