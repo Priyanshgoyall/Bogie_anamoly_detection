@@ -77,12 +77,6 @@
   transition: all var(--t);
   white-space: nowrap;
 }
-.pillDot {
-  width: 6px; height: 6px;
-  border-radius: 50%;
-  background: currentColor;
-  opacity: 0.75;
-}
 .pillIdle {
   background: var(--glass-bg);
   color: var(--muted);
@@ -140,69 +134,13 @@
 }
 .progressLabel strong { color: var(--ink-2); font-size: 12px; font-weight: 700; }
 
-/* Profile section */
-.profileLabel {
-  margin: 20px 0 10px;
-  color: var(--caption);
-  font-size: 9.5px;
-  font-weight: 700;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-}
-
-/* Accuracy toggle switch */
-.toggle {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  padding: 13px 15px;
-  border-radius: var(--r);
-  border: 1px solid var(--line-strong);
-  background: var(--glass-bg);
-  color: var(--ink);
-  text-align: left;
-  cursor: pointer;
-  backdrop-filter: var(--blur-sm);
-  -webkit-backdrop-filter: var(--blur-sm);
-  box-shadow: var(--shadow-xs), inset 0 1px 0 var(--glass-shine);
-  transition: border-color var(--t-fast), background var(--t-fast);
-}
-.toggle:hover { border-color: var(--blue-border); background: var(--blue-soft); }
-.toggle:focus-visible { outline: 2px solid var(--blue); outline-offset: 2px; }
-.toggle strong { display: block; font-size: 13px; font-weight: 700; letter-spacing: -0.01em; }
-.toggle small { display: block; margin-top: 2px; color: var(--muted); font-size: 11px; font-weight: 400; }
-
-/* Toggle switch track/thumb */
-.toggleTrack {
-  position: relative;
-  width: 40px; height: 24px;
-  border-radius: 99px;
-  background: var(--line-strong);
-  flex-shrink: 0;
-  transition: background var(--t);
-  display: block;
-}
-.toggleOn { background: var(--blue); }
-.toggleThumb {
-  position: absolute;
-  width: 18px; height: 18px;
-  top: 3px; left: 3px;
-  border-radius: 50%;
-  background: #fff;
-  box-shadow: 0 1px 4px rgba(0,0,0,0.20), 0 2px 8px rgba(0,0,0,0.12);
-  transition: left var(--t);
-}
-.toggleOn .toggleThumb { left: 19px; }
-
 /* Record box */
 .recordBox {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 12px;
-  margin-top: 10px;
+  margin-top: 14px;
   padding: 12px 15px;
   border-radius: var(--r);
   border: 1px solid var(--line);
@@ -213,5 +151,3 @@
 .recordBox strong { display: block; font-size: 12.5px; font-weight: 700; }
 .recordBox small { display: block; margin-top: 2px; color: var(--muted); font-size: 11px; font-weight: 400; }
 .recordIcon { color: var(--caption); font-size: 22px; flex-shrink: 0; }
-
-.runBtn { width: 100%; margin-top: 14px; min-height: 48px; font-size: 14px; font-weight: 700; }

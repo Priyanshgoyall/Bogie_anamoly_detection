@@ -320,30 +320,6 @@ h3 { font-size: 14px; font-weight: 700; }
 }
 button:focus-visible { border-radius: var(--r-sm); }
 
-/* ─── Status pills ─────────────────────────────────────────────────────────────── */
-.pill {
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-  padding: 3px 9px;
-  border-radius: 99px;
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 0.04em;
-  white-space: nowrap;
-}
-.pill-dot {
-  width: 6px; height: 6px;
-  border-radius: 50%;
-  background: currentColor;
-  opacity: 0.75;
-}
-.pill-neutral  { background: var(--glass-bg); color: var(--muted);      border: 1px solid var(--line-strong); }
-.pill-blue     { background: var(--blue-soft); color: var(--blue);       border: 1px solid var(--blue-border); }
-.pill-green    { background: var(--green-soft); color: var(--green-text); border: 1px solid var(--green-border); }
-.pill-amber    { background: var(--amber-soft); color: var(--amber-text); border: 1px solid var(--amber-border); }
-.pill-red      { background: var(--red-soft);   color: var(--red-text);   border: 1px solid var(--red-border); }
-
 /* ─── Motion preference ────────────────────────────────────────────────────────── */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
